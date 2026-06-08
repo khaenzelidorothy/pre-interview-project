@@ -18,8 +18,25 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+@api_view(['GET'])
+def api_root(request):
+    """Root API endpoint"""
+    return Response({
+        'message': 'Simple Survey API',
+        'version': '1.0.0',
+        'endpoints': {
+            'surveys': '/api/surveys/',
+            'questions': '/api/questions/',
+            'responses': '/api/responses/',
+            'admin': '/admin/'
+        }
+    })
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/', include('surveys.urls')),
 ]
